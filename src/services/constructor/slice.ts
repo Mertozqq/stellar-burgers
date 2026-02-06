@@ -29,6 +29,41 @@ export const burgerConstructorSlice = createSlice({
     },
     addBunToConstructor(state, action: PayloadAction<TIngredient>) {
       state.bun = { ...action.payload, id: nanoid() };
+    },
+    removeIngredientFromConstructor(
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) {
+      state.ingredients = state.ingredients.filter(
+        (val) => val.id != action.payload.id
+      );
+      console.log(state.ingredients);
+    },
+    changeIngredientsPositionTop(
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) {
+      const index = state.ingredients.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (index != -1 && index != 0) {
+        const prevVal = state.ingredients[index - 1];
+        state.ingredients[index - 1] = state.ingredients[index];
+        state.ingredients[index] = prevVal;
+      }
+    },
+    changeIngredientsPositionBottom(
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) {
+      const index = state.ingredients.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (index != -1 && index != state.ingredients.length - 1) {
+        const nextVal = state.ingredients[index + 1];
+        state.ingredients[index + 1] = state.ingredients[index];
+        state.ingredients[index] = nextVal;
+      }
     }
   },
 
@@ -42,6 +77,11 @@ export const burgerConstructorSlice = createSlice({
 export const { getConstructorIngredientsList, getConstructorBun } =
   burgerConstructorSlice.selectors;
 
-export const { addIngredientToConstructor, addBunToConstructor } =
-  burgerConstructorSlice.actions;
+export const {
+  addIngredientToConstructor,
+  addBunToConstructor,
+  removeIngredientFromConstructor,
+  changeIngredientsPositionBottom,
+  changeIngredientsPositionTop
+} = burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer;
