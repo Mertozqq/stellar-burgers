@@ -1,49 +1,50 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getOrder } from './action';
-import { TIngredient } from '@utils-types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { makeOrder } from './action';
+import { TOrder } from '@utils-types';
 
-type TIngredientsState = {
-  ingredients: Array<TIngredient>;
-  loading: boolean;
-  error: string | null;
+type TOrderState = {
+  orderRequest: boolean;
+  orderModalData: TOrder | null;
 };
 
-const initialState: TIngredientsState = {
-  ingredients: [],
-  loading: false,
-  error: null
+const initialState: TOrderState = {
+  orderRequest: false,
+  orderModalData: null
 };
 
-export const ingredientsSlice = createSlice({
-  name: 'ingredients',
+export const orderSlice = createSlice({
+  name: 'order',
   initialState,
   reducers: {
-    // _: {
-    //   reducer: (state, action) => {
-    //   }
-    // }
+    setOrderRequest: (state, action: PayloadAction<boolean>) => {
+      state.orderRequest = action.payload;
+    },
+    clearOrderModalData: (state) => {
+      state.orderModalData = null;
+      state.orderRequest = false;
+    }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getOrder.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(makeOrder.pending, (state) => {
+        state.orderRequest = true;
+        state.orderModalData = null;
       })
-      .addCase(getOrder.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message ?? 'Error';
+      .addCase(makeOrder.rejected, (state) => {
+        state.orderRequest = false;
+        state.orderModalData = null;
       })
-      .addCase(getOrder.fulfilled, (state, action) => {
-        state.loading = false;
-        state.ingredients = action.payload;
+      .addCase(makeOrder.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload.order;
       });
   },
   selectors: {
-    getIngredientsList: (state): TIngredient[] => state.ingredients,
-    getErrorStatus: (state) => state.error,
-    getLoadingStatus: (state) => state.loading
+    getOrderRequestStatus: (state): boolean => state.orderRequest,
+    getOrderModalData: (state): TOrder | null => state.orderModalData
   }
 });
+export const { setOrderRequest, clearOrderModalData } = orderSlice.actions;
 
-export const { getIngredientsList, getErrorStatus, getLoadingStatus } =
-  ingredientsSlice.selectors;
+export const { getOrderRequestStatus, getOrderModalData } =
+  orderSlice.selectors;

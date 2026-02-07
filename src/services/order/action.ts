@@ -1,8 +1,8 @@
-import { getIngredientsApi } from '@api';
+import { orderBurgerApi } from '@api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
+import { TOrder } from '@utils-types';
 
-export const getOrder = createAsyncThunk<TIngredient[]>(
-  'ingredients/getAll',
-  async () => getIngredientsApi()
+export const makeOrder = createAsyncThunk(
+  'order/makeOrder',
+  async (ingredients: string[]) => orderBurgerApi(ingredients)
 );
