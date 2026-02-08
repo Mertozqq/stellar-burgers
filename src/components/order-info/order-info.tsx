@@ -1,11 +1,30 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 
+import { useDispatch, useSelector } from '../../services/store';
+
+import {
+  getFeedOrderStatus,
+  getFeedOrder
+} from '../../services/feedOrder/slice';
+import { getOrderByNumber } from '../../services/feedOrder/action';
+import { useParams } from 'react-router-dom';
+import { getIngredientsList } from '../../services/ingredients/slice';
+
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
+  const dispatch = useDispatch();
+  const { number } = useParams<{ number: string }>();
+  const id = number ? parseInt(number) : 0;
+
+  useEffect(() => {
+    dispatch(getOrderByNumber(id));
+  }, [id, dispatch]);
+  const order = useSelector(getFeedOrder);
+
+  const orderData = order ?? {
     createdAt: '',
     ingredients: [],
     _id: '',
@@ -15,11 +34,21 @@ export const OrderInfo: FC = () => {
     number: 0
   };
 
-  const ingredients: TIngredient[] = [];
+  const ingredients: TIngredient[] = useSelector(getIngredientsList);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
-    if (!orderData || !ingredients.length) return null;
+    // if (!orderData || !ingredients.length) {
+    //   const orderData = {
+    //   createdAt: '',
+    //   ingredients: [],
+    //   _id: '',
+    //   status: '',
+    //   name: '',
+    //   updatedAt: 'string',
+    //   number: 0
+    // };
+    // };
 
     const date = new Date(orderData.createdAt);
 
@@ -27,7 +56,7 @@ export const OrderInfo: FC = () => {
       [key: string]: TIngredient & { count: number };
     };
 
-    const ingredientsInfo = orderData.ingredients.reduce(
+    const ingredientsInfo = orderData?.ingredients.reduce(
       (acc: TIngredientsWithCount, item) => {
         if (!acc[item]) {
           const ingredient = ingredients.find((ing) => ing._id === item);

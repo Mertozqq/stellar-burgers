@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getOrders } from './action';
+import { getOrdersApi } from './action';
 import { TOrder } from '@utils-types';
-import { error } from 'console';
 
 type TOrdersState = {
   orders: TOrder[];
   loading: boolean;
-  error?: string | null;
+  total: number;
+  totalToday: number;
 };
 
 const initialState: TOrdersState = {
   orders: [],
   loading: false,
-  error: null
+  total: 0,
+  totalToday: 0
 };
 
 export const feedOrdersSlice = createSlice({
@@ -25,25 +26,37 @@ export const feedOrdersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getOrders.pending, (state) => {
+      .addCase(getOrdersApi.pending, (state) => {
+        console.log('PENDING');
         state.loading = true;
-        state.orders = [];
+        // state.orders = [];
       })
-      .addCase(getOrders.rejected, (state, action) => {
+      .addCase(getOrdersApi.rejected, (state, action) => {
+        console.log('REJECTED', action.error, action.payload);
+
         state.loading = false;
-        state.orders = [];
-        state.error = action.error.toString();
+        // state.orders = [];
       })
-      .addCase(getOrders.fulfilled, (state, action) => {
+      .addCase(getOrdersApi.fulfilled, (state, action) => {
+        console.log('FULFILLED', action.payload);
         state.loading = false;
         state.orders = action.payload.orders;
+        state.total = action.payload.total;
+        state.totalToday = action.payload.totalToday;
       });
   },
   selectors: {
     getFeedOrdersStatus: (state): boolean => state.loading,
-    getFeedOrders: (state): TOrder[] => state.orders
+    getFeedOrders: (state): TOrder[] => state.orders,
+    getFeedTotal: (state): number => state.total,
+    getFeedTotalToday: (state): number => state.totalToday
   }
 });
 // export const { setOrderRequest } = orderSlice.actions;
 
-export const { getFeedOrdersStatus, getFeedOrders } = feedOrdersSlice.selectors;
+export const {
+  getFeedOrdersStatus,
+  getFeedOrders,
+  getFeedTotal,
+  getFeedTotalToday
+} = feedOrdersSlice.selectors;

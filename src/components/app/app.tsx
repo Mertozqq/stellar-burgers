@@ -11,7 +11,14 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  useLocation,
+  useMatch,
+  useNavigate,
+  useParams
+} from 'react-router-dom';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useEffect } from 'react';
@@ -30,8 +37,8 @@ const App = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(getIngredients());
-  }, [dispatch]);
-
+  }, []);
+  const feedMatch = useMatch('/feed/:number');
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -113,7 +120,7 @@ const App = () => {
                 path='/feed/:number'
                 element={
                   <Modal
-                    title='1'
+                    title={`#${feedMatch?.params.number ?? ''}`}
                     onClose={() => {
                       navigate(-1);
                     }}
