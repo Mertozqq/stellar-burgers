@@ -5,7 +5,8 @@ import {
   logout,
   forgotPassword,
   resetPassword,
-  getUserData
+  getUserData,
+  updateUser
 } from './actions';
 import { TOrder, TUser } from '@utils-types';
 
@@ -59,6 +60,9 @@ export const userSlice = createSlice({
       .addCase(getUserData.rejected, (state, action) => {
         state.isAuthChecked = true;
         state.user = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
       });
   },
   selectors: {

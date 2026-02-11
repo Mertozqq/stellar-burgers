@@ -11,7 +11,7 @@ import {
   updateUserApi
 } from '@api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {} from '@utils-types';
+import { TUser } from '@utils-types';
 import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 import { setIsAuthChecked, setUser } from './slice';
 
@@ -64,6 +64,13 @@ export const resetPassword = createAsyncThunk(
     }
     return response.success;
   }
+);
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (data: TUser) =>
+    // const response = await updateUserApi(data);
+    updateUserApi(data)
 );
 
 export const checkUserAuth = createAsyncThunk(
