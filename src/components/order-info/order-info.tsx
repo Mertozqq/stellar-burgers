@@ -23,7 +23,7 @@ export const OrderInfo: FC = () => {
     dispatch(getOrderByNumber(id));
   }, [id, dispatch]);
   const order = useSelector(getFeedOrder);
-
+  const loading = useSelector(getFeedOrderStatus);
   const orderData = order ?? {
     createdAt: '',
     ingredients: [],
@@ -88,7 +88,7 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
+  if (loading) {
     return <Preloader />;
   }
 

@@ -14,19 +14,22 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
 
   /** TODO: взять переменную из стора */
   const ingredients: TIngredient[] = useSelector(getIngredientsList);
-
+  // console.log(order);
   const orderInfo = useMemo(() => {
     if (!ingredients.length) return null;
 
     const ingredientsInfo = order.ingredients.reduce(
       (acc: TIngredient[], item: string) => {
         const ingredient = ingredients.find((ing) => ing._id === item);
-        if (ingredient) return [...acc, ingredient];
+        // console.log(ingredient);
+        if (ingredient) {
+          return [...acc, ingredient];
+        }
         return acc;
       },
       []
     );
-
+    // console.log(ingredientsInfo);
     const total = ingredientsInfo.reduce((acc, item) => acc + item.price, 0);
 
     const ingredientsToShow = ingredientsInfo.slice(0, maxIngredients);

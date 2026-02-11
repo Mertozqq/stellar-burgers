@@ -5,7 +5,8 @@ import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   getConstructorBun,
-  getConstructorIngredientsList
+  getConstructorIngredientsList,
+  clearBurgerConstructor
 } from '../../services/constructor/slice';
 
 import {
@@ -16,6 +17,7 @@ import {
 } from '../../services/order/slice';
 import { makeOrder } from '../../services/order/action';
 import { useNavigate } from 'react-router-dom';
+import { addUserOrder } from '../../services/userOrders/slice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -32,9 +34,6 @@ export const BurgerConstructor: FC = () => {
       : []), // булка дважды
     ...constructorItems.ingredients.map((item) => item._id)
   ];
-  // useEffect(() => {
-  //   dispatch(makeOrder(ingredientIds));
-  // }, [dispatch]);
 
   const orderRequest = useSelector(getOrderRequestStatus);
   const orderModalData = useSelector(getOrderModalData);
@@ -45,8 +44,17 @@ export const BurgerConstructor: FC = () => {
     } else {
       dispatch(setOrderRequest(true));
       dispatch(makeOrder(ingredientIds));
+      console.log(orderModalData);
     }
   };
+  useEffect(() => {
+    if (orderModalData) {
+      console.log(123);
+      dispatch(addUserOrder(orderModalData));
+      dispatch(clearBurgerConstructor());
+    }
+  }, [orderModalData]);
+
   const closeOrderModal = () => {
     dispatch(clearOrderModalData());
   };
