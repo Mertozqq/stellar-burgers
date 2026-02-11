@@ -65,11 +65,15 @@ const App = () => {
             />
             <Route
               path='/forgot-password'
-              element={<ProtectedRoute component={<ForgotPassword />} />}
+              element={
+                <ProtectedRoute onlyUnAuth component={<ForgotPassword />} />
+              }
             />
             <Route
               path='/reset-password'
-              element={<ProtectedRoute component={<ResetPassword />} />}
+              element={
+                <ProtectedRoute onlyUnAuth component={<ResetPassword />} />
+              }
             />
             <Route
               path='/profile'
