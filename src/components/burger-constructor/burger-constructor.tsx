@@ -16,24 +16,20 @@ import {
   clearOrderModalData
 } from '../../services/order/slice';
 import { makeOrder } from '../../services/order/action';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { addUserOrder } from '../../services/userOrders/slice';
+import { getUser } from '../../services/user/slice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const user = useSelector(getUser);
+  console.log(user);
   const constructorItems = {
     bun: useSelector(getConstructorBun),
     ingredients: useSelector(getConstructorIngredientsList)
   };
-  const ingredientIds: string[] = [
-    ...(constructorItems.bun
-      ? [constructorItems.bun._id, constructorItems.bun._id]
-      : []), // булка дважды
-    ...constructorItems.ingredients.map((item) => item._id)
-  ];
 
   const orderRequest = useSelector(getOrderRequestStatus);
   const orderModalData = useSelector(getOrderModalData);
@@ -41,15 +37,22 @@ export const BurgerConstructor: FC = () => {
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) {
       return;
+    }
+    if (!user) {
+      navigate('/login', { replace: true });
     } else {
+      const ingredientIds: string[] = [
+        ...(constructorItems.bun
+          ? [constructorItems.bun._id, constructorItems.bun._id]
+          : []), // булка дважды
+        ...constructorItems.ingredients.map((item) => item._id)
+      ];
       dispatch(setOrderRequest(true));
       dispatch(makeOrder(ingredientIds));
-      console.log(orderModalData);
     }
   };
   useEffect(() => {
     if (orderModalData) {
-      console.log(123);
       dispatch(addUserOrder(orderModalData));
       dispatch(clearBurgerConstructor());
     }

@@ -42,6 +42,7 @@ const App = () => {
   }, []);
   const feedMatch = useMatch('/feed/:number');
   const orderMatch = useMatch('/profile/orders/:number');
+  const handleModalClose = () => navigate(-1);
 
   return (
     <div className={styles.app}>
@@ -85,7 +86,19 @@ const App = () => {
             />
 
             <Route path='/feed/:number' element={<OrderInfo />} />
-            <Route path='/ingredients/:id' element={<IngredientDetails />} />
+            <Route
+              path='/ingredients/:id'
+              element={
+                <div className={styles.detailPageWrap}>
+                  <p
+                    className={`text text_type_main-large ${styles.detailHeader}`}
+                  >
+                    Детали ингредиента
+                  </p>
+                  <IngredientDetails />
+                </div>
+              }
+            />
             <Route
               path='/profile/orders/:number'
               element={<ProtectedRoute component={<OrderInfo />} />}
@@ -101,9 +114,7 @@ const App = () => {
                 element={
                   <Modal
                     title={`#${feedMatch?.params.number ?? ''}`}
-                    onClose={() => {
-                      navigate(-1);
-                    }}
+                    onClose={handleModalClose}
                   >
                     <OrderInfo />
                   </Modal>
@@ -112,12 +123,7 @@ const App = () => {
               <Route
                 path='/ingredients/:id'
                 element={
-                  <Modal
-                    title='Детали ингредиента'
-                    onClose={() => {
-                      navigate(-1);
-                    }}
-                  >
+                  <Modal title='Детали ингредиента' onClose={handleModalClose}>
                     <IngredientDetails />
                   </Modal>
                 }
@@ -129,9 +135,7 @@ const App = () => {
                     component={
                       <Modal
                         title={`#${orderMatch?.params.number ?? ''}`}
-                        onClose={() => {
-                          navigate(-1);
-                        }}
+                        onClose={handleModalClose}
                       >
                         <OrderInfo />
                       </Modal>
