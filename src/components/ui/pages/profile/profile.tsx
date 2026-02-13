@@ -54,6 +54,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
           <Input
             type={'password'}
             placeholder={'Пароль'}
+            autoComplete='new-password'
             onChange={handleInputChange}
             value={formValue.password}
             name={'password'}
