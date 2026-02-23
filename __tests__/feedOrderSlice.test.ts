@@ -1,4 +1,4 @@
-import { feedOrderSlice } from '../src/services/feedOrder/slice';
+import { feedOrderSlice, initialState } from '../src/services/feedOrder/slice';
 import { getOrderByNumber as getOrderByNumberApi } from '../src/services/feedOrder/action';
 import type { TOrder } from '../src/utils/types';
 
@@ -13,14 +13,16 @@ describe('feedOrderSlice reducer (extraReducers)', () => {
     ingredients: ['1', '2']
   });
 
+  const getFreshInitialState = () => ({
+      ...initialState,
+      order: initialState.order,
+    });
+
   it('pending: loading становится true', () => {
-    const initialState = {
-      order: null as TOrder | null,
-      loading: false
-    };
+    
 
     const nextState = feedOrderSlice.reducer(
-      initialState,
+      getFreshInitialState(),
       getOrderByNumberApi.pending('req-1', 123)
     );
 
@@ -29,10 +31,7 @@ describe('feedOrderSlice reducer (extraReducers)', () => {
   });
 
   it('rejected: loading становится false, order сбрасывается в null', () => {
-    const initialState = {
-      order: makeOrder('old', 1),
-      loading: true
-    };
+    
 
     const action = getOrderByNumberApi.rejected(
       new Error('Network error'),
@@ -40,17 +39,14 @@ describe('feedOrderSlice reducer (extraReducers)', () => {
       123
     );
 
-    const nextState = feedOrderSlice.reducer(initialState, action);
+    const nextState = feedOrderSlice.reducer(getFreshInitialState(), action);
 
     expect(nextState.loading).toBe(false);
     expect(nextState.order).toBeNull();
   });
 
   it('fulfilled: loading становится false, order берётся из orders[0]', () => {
-    const initialState = {
-      order: null as TOrder | null,
-      loading: true
-    };
+    
 
     const first = makeOrder('first', 100);
     const second = makeOrder('second', 101);
@@ -61,7 +57,7 @@ describe('feedOrderSlice reducer (extraReducers)', () => {
     };
 
     const nextState = feedOrderSlice.reducer(
-      initialState,
+      getFreshInitialState(),
       getOrderByNumberApi.fulfilled(payload, 'req-1', 123)
     );
 
@@ -70,25 +66,19 @@ describe('feedOrderSlice reducer (extraReducers)', () => {
   });
 
   it('fulfilled: если orders пустой массив, order становится undefined (текущее поведение)', () => {
-    const initialState = {
-      order: makeOrder('old', 1),
-      loading: true
-    };
+    getFreshInitialState()
 
     const payload = { orders: [] as TOrder[],
         success: true
      };
 
     const nextState = feedOrderSlice.reducer(
-      initialState,
+      getFreshInitialState(),
       getOrderByNumberApi.fulfilled(payload, 'req-1', 123)
     );
 
     expect(nextState.loading).toBe(false);
 
-    // В твоём редьюсере:
-    // state.order = action.payload.orders[0]
-    // Если массив пустой — это будет undefined
     expect((nextState as any).order).toBeUndefined();
   });
 });

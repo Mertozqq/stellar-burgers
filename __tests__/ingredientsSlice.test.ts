@@ -1,4 +1,4 @@
-import { ingredientsSlice } from '../src/services/ingredients/slice';
+import { ingredientsSlice, initialState } from '../src/services/ingredients/slice';
 import { getIngredients } from '../src/services/ingredients/action';
 import type { TIngredient } from '../src/utils/types';
 
@@ -17,15 +17,14 @@ describe('ingredientsSlice reducer (extraReducers)', () => {
     image_mobile: ''
   });
 
-  it('pending: loading становится true, error сбрасывается в null', () => {
-    const initialState = {
-      ingredients: [],
-      loading: false,
-      error: 'some error' as string | null
-    };
+  const getFreshInitialState = () => ({
+    ...initialState,
+    ingredients: [...initialState.ingredients]
+  });
 
+  it('pending: loading становится true, error сбрасывается в null', () => {
     const nextState = ingredientsSlice.reducer(
-      initialState,
+      getFreshInitialState(),
       getIngredients.pending('req-1')
     );
 
@@ -34,16 +33,10 @@ describe('ingredientsSlice reducer (extraReducers)', () => {
   });
 
   it('fulfilled: записывает ингредиенты в store, loading становится false', () => {
-    const initialState = {
-      ingredients: [],
-      loading: true,
-      error: null as string | null
-    };
-
     const payload: TIngredient[] = [makeIngredient('1'), makeIngredient('2')];
 
     const nextState = ingredientsSlice.reducer(
-      initialState,
+      getFreshInitialState(),
       getIngredients.fulfilled(payload, 'req-1')
     );
 
@@ -52,30 +45,20 @@ describe('ingredientsSlice reducer (extraReducers)', () => {
   });
 
   it('rejected: записывает ошибку в store.error, loading становится false', () => {
-    const initialState = {
-      ingredients: [],
-      loading: true,
-      error: null as string | null
-    };
-
     const action = getIngredients.rejected(new Error('Network error'), 'req-1');
 
-    const nextState = ingredientsSlice.reducer(initialState, action);
+    const nextState = ingredientsSlice.reducer(getFreshInitialState(), action);
 
     expect(nextState.loading).toBe(false);
     expect(nextState.error).toBe('Network error');
   });
 
   it("rejected: если message отсутствует, error становится 'Error'", () => {
-    const initialState = {
-      ingredients: [],
-      loading: true,
-      error: null as string | null
-    };
+    
 
     const action = getIngredients.rejected(null, 'req-1');
 
-    const nextState = ingredientsSlice.reducer(initialState, action);
+    const nextState = ingredientsSlice.reducer(getFreshInitialState(), action);
 
     expect(nextState.loading).toBe(false);
     expect(nextState.error).toBe('Rejected');

@@ -6,7 +6,7 @@ type TOrdersState = {
   orders: TOrder[];
 };
 
-const initialState: TOrdersState = {
+export const initialState: TOrdersState = {
   orders: []
 };
 

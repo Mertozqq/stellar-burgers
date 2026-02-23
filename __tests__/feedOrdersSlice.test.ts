@@ -1,4 +1,4 @@
-import { feedOrdersSlice } from '../src/services/feedOrders/slice';
+import { feedOrdersSlice, initialState } from '../src/services/feedOrders/slice';
 import { getOrdersApi } from '../src/services/feedOrders/action';
 import type { TOrder } from '../src/utils/types';
 
@@ -13,16 +13,17 @@ describe('feedOrdersSlice reducer (extraReducers)', () => {
     ingredients: ['1', '2']
   });
 
+  const getFreshInitialState = (total=0, totalToday=0) => ({
+        ...initialState,
+        total: total,
+        totalToday: totalToday,
+        orders: [...initialState.orders],
+      });
+
   it('pending: loading становится true', () => {
-    const initialState = {
-      orders: [],
-      loading: false,
-      total: 0,
-      totalToday: 0
-    };
 
     const nextState = feedOrdersSlice.reducer(
-      initialState,
+      getFreshInitialState(),
       getOrdersApi.pending('req-1')
     );
 
@@ -33,19 +34,14 @@ describe('feedOrdersSlice reducer (extraReducers)', () => {
   });
 
   it('rejected: loading становится false', () => {
-    const initialState = {
-      orders: [makeOrder('1', 1)],
-      loading: true,
-      total: 10,
-      totalToday: 5
-    };
+    
 
     const action = getOrdersApi.rejected(
       new Error('Network error'),
       'req-1'
     );
 
-    const nextState = feedOrdersSlice.reducer(initialState, action);
+    const nextState = feedOrdersSlice.reducer(getFreshInitialState(10, 5), action);
 
     expect(nextState.loading).toBe(false);
     expect(nextState.orders).toEqual(initialState.orders);
@@ -54,12 +50,7 @@ describe('feedOrdersSlice reducer (extraReducers)', () => {
   });
 
   it('fulfilled: записывает orders, total и totalToday, loading становится false', () => {
-    const initialState = {
-      orders: [],
-      loading: true,
-      total: 0,
-      totalToday: 0
-    };
+    
 
     const orders = [makeOrder('1', 1), makeOrder('2', 2)];
 
@@ -71,7 +62,7 @@ describe('feedOrdersSlice reducer (extraReducers)', () => {
     };
 
     const nextState = feedOrdersSlice.reducer(
-      initialState,
+      getFreshInitialState(),
       getOrdersApi.fulfilled(payload, 'req-1')
     );
 

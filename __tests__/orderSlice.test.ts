@@ -1,4 +1,9 @@
-import { orderSlice, setOrderRequest, clearOrderModalData } from '../src/services/order/slice';
+import {
+  orderSlice,
+  setOrderRequest,
+  clearOrderModalData,
+  initialState
+} from '../src/services/order/slice';
 import { makeOrder } from '../src/services/order/action';
 import type { TOrder } from '../src/utils/types';
 
@@ -13,70 +18,75 @@ describe('orderSlice reducer (reducers + extraReducers)', () => {
     ingredients: ['1', '2']
   });
 
-  it('setOrderRequest: устанавливает orderRequest', () => {
-    const initialState = { orderRequest: false, orderModalData: null as TOrder | null };
+  const getFreshInitialState = (
+    orderModalData: TOrder | null = initialState.orderModalData,
+    orderRequest: boolean = initialState.orderRequest
+  ) => ({
+    ...initialState,
+    orderModalData,
+    orderRequest
+  });
 
-    const nextState = orderSlice.reducer(initialState, setOrderRequest(true));
+  it('setOrderRequest: устанавливает orderRequest', () => {
+    const nextState = orderSlice.reducer(
+      getFreshInitialState(),
+      setOrderRequest(true)
+    );
 
     expect(nextState.orderRequest).toBe(true);
     expect(nextState.orderModalData).toBeNull();
   });
 
   it('clearOrderModalData: сбрасывает orderModalData в null и orderRequest в false', () => {
-    const initialState = {
-      orderRequest: true,
-      orderModalData: makeTestOrder('1', 1)
-    };
+    const prevState = getFreshInitialState(makeTestOrder('1', 1), true);
 
-    const nextState = orderSlice.reducer(initialState, clearOrderModalData());
+    const nextState = orderSlice.reducer(prevState, clearOrderModalData());
 
     expect(nextState.orderRequest).toBe(false);
     expect(nextState.orderModalData).toBeNull();
   });
 
   it('makeOrder.pending: orderRequest=true, orderModalData=null', () => {
-    const initialState = {
-      orderRequest: false,
-      orderModalData: makeTestOrder('old', 99)
-    };
+    const prevState = getFreshInitialState(makeTestOrder('old', 99), false);
 
-    const nextState = orderSlice.reducer(initialState, makeOrder.pending('req-1', ['ing-1', 'ing-2']));
+    const nextState = orderSlice.reducer(
+      prevState,
+      makeOrder.pending('req-1', ['ing-1', 'ing-2'])
+    );
 
     expect(nextState.orderRequest).toBe(true);
     expect(nextState.orderModalData).toBeNull();
   });
 
   it('makeOrder.rejected: orderRequest=false, orderModalData=null', () => {
-    const initialState = {
-        orderRequest: true,
-        orderModalData: makeTestOrder('old', 99)
-    };
+    const prevState = getFreshInitialState(makeTestOrder('old', 99), true);
 
     const nextState = orderSlice.reducer(
-        initialState,
-        makeOrder.rejected(new Error('Network error'), 'req-1', ['ing-1', 'ing-2'])
+      prevState,
+      makeOrder.rejected(new Error('Network error'), 'req-1', ['ing-1', 'ing-2'])
     );
 
     expect(nextState.orderRequest).toBe(false);
     expect(nextState.orderModalData).toBeNull();
-    });
+  });
 
   it('makeOrder.fulfilled: orderRequest=false, orderModalData записывается из payload.order', () => {
-    const initialState = { orderRequest: true, orderModalData: null as TOrder | null };
+    const prevState = getFreshInitialState(null, true);
 
     const order = makeTestOrder('new', 100);
+
     const payload = {
-        success: true,
-        order,
-        name: 'Тестовый бургер'
+      success: true,
+      order,
+      name: 'Тестовый бургер'
     };
 
     const nextState = orderSlice.reducer(
-        initialState,
-        makeOrder.fulfilled(payload, 'req-1', ['ing-1', 'ing-2'])
+      prevState,
+      makeOrder.fulfilled(payload, 'req-1', ['ing-1', 'ing-2'])
     );
 
     expect(nextState.orderRequest).toBe(false);
     expect(nextState.orderModalData).toEqual(order);
-    });
+  });
 });
