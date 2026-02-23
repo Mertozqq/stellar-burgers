@@ -1,4 +1,3 @@
-// __tests__/feedOrdersSlice.test.ts
 import { feedOrdersSlice } from '../src/services/feedOrders/slice';
 import { getOrdersApi } from '../src/services/feedOrders/action';
 import type { TOrder } from '../src/utils/types';
@@ -49,7 +48,6 @@ describe('feedOrdersSlice reducer (extraReducers)', () => {
     const nextState = feedOrdersSlice.reducer(initialState, action);
 
     expect(nextState.loading).toBe(false);
-    // Остальные данные не должны измениться
     expect(nextState.orders).toEqual(initialState.orders);
     expect(nextState.total).toBe(10);
     expect(nextState.totalToday).toBe(5);
@@ -66,6 +64,7 @@ describe('feedOrdersSlice reducer (extraReducers)', () => {
     const orders = [makeOrder('1', 1), makeOrder('2', 2)];
 
     const payload = {
+      success: true,
       orders,
       total: 200,
       totalToday: 20

@@ -1,4 +1,3 @@
-// __tests__/ingredientsSlice.test.ts
 import { ingredientsSlice } from '../src/services/ingredients/slice';
 import { getIngredients } from '../src/services/ingredients/action';
 import type { TIngredient } from '../src/utils/types';

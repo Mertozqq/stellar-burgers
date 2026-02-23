@@ -1,4 +1,3 @@
-// __tests__/feedOrderSlice.test.ts
 import { feedOrderSlice } from '../src/services/feedOrder/slice';
 import { getOrderByNumber as getOrderByNumberApi } from '../src/services/feedOrder/action';
 import type { TOrder } from '../src/utils/types';
@@ -56,7 +55,10 @@ describe('feedOrderSlice reducer (extraReducers)', () => {
     const first = makeOrder('first', 100);
     const second = makeOrder('second', 101);
 
-    const payload = { orders: [first, second] };
+    const payload = { 
+        orders: [first, second],
+        success: true
+    };
 
     const nextState = feedOrderSlice.reducer(
       initialState,
@@ -73,7 +75,9 @@ describe('feedOrderSlice reducer (extraReducers)', () => {
       loading: true
     };
 
-    const payload = { orders: [] as TOrder[] };
+    const payload = { orders: [] as TOrder[],
+        success: true
+     };
 
     const nextState = feedOrderSlice.reducer(
       initialState,

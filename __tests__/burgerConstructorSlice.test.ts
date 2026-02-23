@@ -1,4 +1,3 @@
-// __tests__/burgerConstructorSlice.test.ts
 import reducer, {
   addIngredientToConstructor,
   removeIngredientFromConstructor,
@@ -31,7 +30,6 @@ describe('burgerConstructorSlice reducer', () => {
   it('обрабатывает добавление ингредиента', () => {
     const initialState = { bun: null, ingredients: [] as TConstructorIngredient[] };
 
-    // Чтобы не зависеть от nanoid/prepare, отправляем action вручную с готовым payload
     const action = {
       type: addIngredientToConstructor.type,
       payload: A

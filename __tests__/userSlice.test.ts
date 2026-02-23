@@ -1,4 +1,3 @@
-// __tests__/userSlice.test.ts
 import { userSlice, setIsAuthChecked, setUser } from '../src/services/user/slice';
 import {
   register,
@@ -11,6 +10,7 @@ import {
 } from '../src/services/user/actions';
 
 import type { TUser } from '../src/utils/types';
+import type { TLoginData, TRegisterData } from '../src/utils/burger-api';
 
 describe('userSlice reducer (reducers + extraReducers)', () => {
   const makeUser = (email: string, name = 'Test User'): TUser => ({
@@ -19,7 +19,12 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
   });
 
   it('setUser: устанавливает user', () => {
-    const initialState = { user: null as TUser | null, isAuthChecked: false, error: null as string | null };
+    const initialState = {
+      user: null as TUser | null,
+      isAuthChecked: false,
+      error: null as string | null
+    };
+
     const user = makeUser('test@mail.com');
 
     const nextState = userSlice.reducer(initialState, setUser(user));
@@ -28,7 +33,11 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
   });
 
   it('setIsAuthChecked: устанавливает isAuthChecked', () => {
-    const initialState = { user: null as TUser | null, isAuthChecked: false, error: null as string | null };
+    const initialState = {
+      user: null as TUser | null,
+      isAuthChecked: false,
+      error: null as string | null
+    };
 
     const nextState = userSlice.reducer(initialState, setIsAuthChecked(true));
 
@@ -36,11 +45,18 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
   });
 
   it('login.fulfilled: user устанавливается, isAuthChecked=true', () => {
-    const initialState = { user: null as TUser | null, isAuthChecked: false, error: null as string | null };
+    const initialState = {
+      user: null as TUser | null,
+      isAuthChecked: false,
+      error: null as string | null
+    };
+
     const user = makeUser('login@mail.com');
 
-    // login arg: TLoginData (судя по импорту). Мы не знаем поля, поэтому кладём минимально как unknown.
-    const arg = { email: 'login@mail.com', password: '123' } as unknown;
+    const arg: TLoginData = {
+      email: 'login@mail.com',
+      password: '123'
+    };
 
     const nextState = userSlice.reducer(
       initialState,
@@ -52,11 +68,19 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
   });
 
   it('register.fulfilled: user устанавливается, isAuthChecked=true', () => {
-    const initialState = { user: null as TUser | null, isAuthChecked: false, error: null as string | null };
+    const initialState = {
+      user: null as TUser | null,
+      isAuthChecked: false,
+      error: null as string | null
+    };
+
     const user = makeUser('register@mail.com');
 
-    // register arg: TRegisterData (не знаем поля) — передаём минимально как unknown
-    const arg = { email: 'register@mail.com', password: '123', name: 'Reg' } as unknown;
+    const arg: TRegisterData = {
+      email: 'register@mail.com',
+      password: '123',
+      name: 'Reg'
+    };
 
     const nextState = userSlice.reducer(
       initialState,
@@ -74,6 +98,7 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
       error: null as string | null
     };
 
+    // logout thunk без аргументов => arg = undefined
     const nextState = userSlice.reducer(
       initialState,
       logout.fulfilled(true, 'req-1', undefined)
@@ -90,13 +115,15 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
       error: 'Some error'
     };
 
+    // forgotPassword arg: { email: string }
     const arg = { email: 'a@b.com' };
 
-    const payload = { success: true } as unknown;
+    // payload reducer не использует; thunk возвращает TServerResponse<{}>, но нам достаточно объекта
+    const payload = { success: true };
 
     const nextState = userSlice.reducer(
       initialState,
-      forgotPassword.fulfilled(payload, 'req-1', arg)
+      forgotPassword.fulfilled(payload as any, 'req-1', arg)
     );
 
     expect(nextState.error).toBeNull();
@@ -111,6 +138,7 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
 
     const arg = { password: 'newpass', token: 'token' };
 
+    // resetPassword возвращает boolean (success)
     const nextState = userSlice.reducer(
       initialState,
       resetPassword.fulfilled(true, 'req-1', arg)
@@ -128,11 +156,11 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
 
     const user = makeUser('get@mail.com');
 
-    const payload = { user };
+    const payload = { success: true, user };
 
     const nextState = userSlice.reducer(
       initialState,
-      getUserData.fulfilled(payload, 'req-1', undefined)
+      getUserData.fulfilled(payload as any, 'req-1', undefined)
     );
 
     expect(nextState.isAuthChecked).toBe(true);
@@ -164,14 +192,17 @@ describe('userSlice reducer (reducers + extraReducers)', () => {
 
     const updatedUser = makeUser('new@mail.com', 'Updated');
 
+    // updateUser thunk arg: TUser
     const arg: TUser = updatedUser;
 
-    const payload = { user: updatedUser };
+    // updateUserApi возвращает TUserResponse => { success: boolean, user: TUser }
+    const payload = { success: true, user: updatedUser };
 
     const nextState = userSlice.reducer(
       initialState,
-      updateUser.fulfilled(payload, 'req-1', arg)
+      updateUser.fulfilled(payload as any, 'req-1', arg)
     );
+
     expect(nextState.user).toEqual(updatedUser);
   });
 });

@@ -1,4 +1,3 @@
-// __tests__/orderSlice.test.ts
 import { orderSlice, setOrderRequest, clearOrderModalData } from '../src/services/order/slice';
 import { makeOrder } from '../src/services/order/action';
 import type { TOrder } from '../src/utils/types';
@@ -66,7 +65,11 @@ describe('orderSlice reducer (reducers + extraReducers)', () => {
     const initialState = { orderRequest: true, orderModalData: null as TOrder | null };
 
     const order = makeTestOrder('new', 100);
-    const payload = { order };
+    const payload = {
+        success: true,
+        order,
+        name: 'Тестовый бургер'
+    };
 
     const nextState = orderSlice.reducer(
         initialState,
