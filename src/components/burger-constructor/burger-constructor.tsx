@@ -21,11 +21,10 @@ import { addUserOrder } from '../../services/userOrders/slice';
 import { getUser } from '../../services/user/slice';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(getUser);
-  console.log(user);
+
   const constructorItems = {
     bun: useSelector(getConstructorBun),
     ingredients: useSelector(getConstructorIngredientsList)
@@ -33,7 +32,6 @@ export const BurgerConstructor: FC = () => {
 
   const orderRequest = useSelector(getOrderRequestStatus);
   const orderModalData = useSelector(getOrderModalData);
-  // сделать
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) {
       return;
@@ -71,8 +69,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  // return null;
 
   return (
     <BurgerConstructorUI

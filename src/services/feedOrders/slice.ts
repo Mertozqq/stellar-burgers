@@ -9,7 +9,7 @@ type TOrdersState = {
   totalToday: number;
 };
 
-const initialState: TOrdersState = {
+export const initialState: TOrdersState = {
   orders: [],
   loading: false,
   total: 0,
