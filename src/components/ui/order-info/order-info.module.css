@@ -1,13 +1,15 @@
 .wrap {
   margin: 0 auto;
   width: 640px;
+  max-width: 100%;
 }
+
 .number {
   text-align: center;
 }
 
 .status {
-  color: #00cccc;
+  color: var(--colors-interface-success);
 }
 
 .header {
@@ -18,7 +20,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+  background: linear-gradient(135deg, #ff8a3d 0%, #ffd36f 100%);
   position: relative;
 }
 
@@ -26,7 +28,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #1c1c21;
+  background-color: #1f1814;
   position: absolute;
   left: 2px;
   top: 2px;
@@ -50,20 +52,25 @@
   margin-left: auto;
 }
 
+.currency {
+  color: #ffd6b1;
+}
+
 .list {
   list-style: none;
   padding: 0;
   overflow-y: auto;
   max-height: 320px;
+  padding-right: 8px;
 }
 
 .list::-webkit-scrollbar {
   width: 8px;
-  background-color: #2f2f37;
+  background-color: rgba(37, 29, 24, 0.7);
 }
 
 .list::-webkit-scrollbar-thumb {
-  background-color: #8585ad;
+  background-color: rgba(255, 138, 61, 0.58);
 }
 
 .bottom {
@@ -71,6 +78,7 @@
   justify-content: flex-start;
   align-items: center;
 }
+
 .total {
   margin-left: auto;
 }

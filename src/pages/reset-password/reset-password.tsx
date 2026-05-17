@@ -1,7 +1,6 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
 import { useDispatch } from '../../services/store';
 import { resetPassword } from '../../services/user/actions';
@@ -17,7 +16,6 @@ export const ResetPassword: FC = () => {
     setError(null);
     dispatch(resetPassword({ password, token }))
       .unwrap()
-      // resetPasswordApi()
       .then(() => {
         localStorage.removeItem('resetPassword');
         navigate('/login');

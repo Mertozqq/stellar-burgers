@@ -2,10 +2,16 @@
   display: flex;
   justify-content: left;
   align-items: flex-start;
+  gap: 16px;
 }
+
 .column {
   display: inline;
-  min-width: 50%;
+  min-width: calc(50% - 8px);
+  padding: 18px 18px 22px;
+  border: 1px solid rgba(255, 138, 61, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .list {
@@ -31,4 +37,16 @@
 
 .content {
   text-align: left;
+  color: #ffd6b1;
+  text-shadow: 0 0 28px rgba(255, 138, 61, 0.15);
+}
+
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+
+  .column {
+    min-width: 100%;
+  }
 }

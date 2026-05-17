@@ -35,7 +35,8 @@ jobs:
 
       - name: Build project
         env:
-          BURGER_API_URL: https://norma.education-services.ru/api
+          APP_API_URL: ${{ vars.APP_API_URL }}
+          APP_WS_URL: ${{ vars.APP_WS_URL }}
         run: npm run build
 
       - name: Setup Pages

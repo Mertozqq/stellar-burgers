@@ -1,28 +1,49 @@
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #131316;
-  color: #f2f2f3;
+  min-height: 100vh;
+  color: var(--text-primary-color);
+  background: transparent;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #2f2f37;
+  background: rgba(37, 29, 24, 0.7);
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border: 3px solid #8585ad;
-  background: #8585ad;
+  border: 2px solid rgba(37, 29, 24, 0.7);
+  background: rgba(255, 138, 61, 0.58);
+  border-radius: 999px;
 }
 
 .detailPageWrap {
-  margin: 120px auto;
+  width: min(880px, calc(100% - 32px));
+  margin: 148px auto 72px;
+  padding: 36px;
+  border: 1px solid var(--app-border);
+  border-radius: 32px;
+  background: var(--app-panel);
+  box-shadow: var(--app-shadow);
+  backdrop-filter: blur(18px);
 }
 
 .detailHeader {
-  text-align: center;
+  text-align: left;
+  color: #ffd4ae;
+}
+
+@media (max-width: 768px) {
+  .detailPageWrap {
+    margin-top: 120px;
+    padding: 24px 18px;
+  }
+
+  .detailHeader {
+    text-align: center;
+  }
 }

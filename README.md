@@ -1,19 +1,75 @@
-# Проектная работа 11-го спринта
+# Cowboy Burger
 
-[Макет](<https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design>)
+Frontend project built with `React` and `TypeScript`.
 
-[Чеклист](https://www.notion.so/praktikum/0527c10b723d4873aa75686bad54b32e?pvs=4)
+## Stack
 
-## Этапы работы:
+- `React 18`
+- `TypeScript`
+- `Redux Toolkit`
+- `React Router`
+- `Webpack`
+- `Jest`
+- `Cypress`
+- `Storybook`
 
-1. Разверните проект и ознакомьтесь с кодом. Все необходимые вам компоненты уже созданы и лежат в папке `src/components`
+## Run locally
 
-2. Настройте роутинг.
+Install dependencies:
 
-3. Напишите функционал запросов данных с сервера, используя `Redux` и глобальный `store`. Сами "ручки" уже прописаны и лежат в `utils/burger-api.ts`
+```bash
+npm install
+```
 
-4. Настройте авторизацию и создайте защищённые роуты.
+Create `.env` from `.env.example`:
 
-## Важно:
+```env
+APP_API_URL=https://api.example.com/api
+APP_WS_URL=wss://api.example.com
+```
 
-Для корректной работы запросов к серверу необходимо добавить переменную BURGER_API_URL в окружение. Сама ссылка находится в файле `.env.example`.
+`APP_API_URL` is used for HTTP requests. `APP_WS_URL` is used for realtime order streams. If `APP_WS_URL` is omitted, the app derives it from `APP_API_URL`.
+
+Start the app:
+
+```bash
+npm start
+```
+
+Start the local API server:
+
+```bash
+npm run server
+```
+
+Production build:
+
+```bash
+npm run build
+```
+
+## Deploy
+
+The project is configured for deployment to `GitHub Pages` through `GitHub Actions`.
+
+Before deploying, set repository variables:
+
+- `APP_API_URL`
+- `APP_WS_URL`
+
+## Local backend
+
+The repository includes a local backend in `server/` with:
+
+- ingredient catalog
+- authentication
+- order creation
+- order details
+- realtime order feeds over WebSocket
+
+Demo account:
+
+```text
+email: demo@cowboy.local
+password: 123456
+```

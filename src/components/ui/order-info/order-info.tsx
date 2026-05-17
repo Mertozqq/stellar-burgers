@@ -1,13 +1,14 @@
 import React, { FC, memo } from 'react';
-import {
-  CurrencyIcon,
-  FormattedDate
-} from '@zlden/react-developer-burger-ui-components';
+import { FormattedDate } from '@zlden/react-developer-burger-ui-components';
 
 import styles from './order-info.module.css';
 
 import { OrderInfoUIProps } from './type';
 import { OrderStatus } from '@components';
+
+const TEXT = {
+  composition: '\u0421\u043e\u0441\u0442\u0430\u0432:'
+};
 
 export const OrderInfoUI: FC<OrderInfoUIProps> = memo(({ orderInfo }) => (
   <div className={styles.wrap}>
@@ -15,7 +16,9 @@ export const OrderInfoUI: FC<OrderInfoUIProps> = memo(({ orderInfo }) => (
       {orderInfo.name}
     </h3>
     <OrderStatus status={orderInfo.status} />
-    <p className={`text text_type_main-medium pt-15 pb=6`}>Состав:</p>
+    <p className={`text text_type_main-medium pt-15 pb=6`}>
+      {TEXT.composition}
+    </p>
     <ul className={`${styles.list} mb-8`}>
       {Object.values(orderInfo.ingredientsInfo).map((item, index) => (
         <li className={`pb-4 pr-6 ${styles.item}`} key={index}>
@@ -34,7 +37,9 @@ export const OrderInfoUI: FC<OrderInfoUIProps> = memo(({ orderInfo }) => (
           >
             {item.count} x {item.price}
           </span>
-          <CurrencyIcon type={'primary'} />
+          <span className={`text text_type_digits-default ${styles.currency}`}>
+            &#8381;
+          </span>
         </li>
       ))}
     </ul>
@@ -45,7 +50,9 @@ export const OrderInfoUI: FC<OrderInfoUIProps> = memo(({ orderInfo }) => (
       <span className={`text text_type_digits-default pr-4 ${styles.total}`}>
         {orderInfo.total}
       </span>
-      <CurrencyIcon type={'primary'} />
+      <span className={`text text_type_digits-default ${styles.currency}`}>
+        &#8381;
+      </span>
     </div>
   </div>
 ));

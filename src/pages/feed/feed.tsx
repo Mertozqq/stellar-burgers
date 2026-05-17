@@ -1,27 +1,58 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 
 import {
+  getFeedOrders,
   getFeedOrdersStatus,
-  getFeedOrders
+  setFeedOrdersConnecting,
+  setFeedOrdersData,
+  setFeedOrdersDisconnected,
+  setFeedOrdersError
 } from '../../services/feedOrders/slice';
-import { getOrdersApi } from '../../services/feedOrders/action';
+import { useOrdersWebSocket } from '../../hooks/use-orders-websocket';
+import {
+  getFeedOrdersWsUrl,
+  parseOrdersStreamMessage
+} from '../../utils/orders-websocket';
+
 export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getOrdersApi());
-  }, [dispatch]);
   const orders: TOrder[] = useSelector(getFeedOrders);
   const loading = useSelector(getFeedOrdersStatus);
-  if (loading) {
+
+  const { reconnect } = useOrdersWebSocket({
+    url: getFeedOrdersWsUrl(),
+    onOpen: () => dispatch(setFeedOrdersConnecting()),
+    onClose: () => dispatch(setFeedOrdersDisconnected()),
+    onError: (error) => dispatch(setFeedOrdersError(error)),
+    onMessage: (rawData) => {
+      try {
+        const data = parseOrdersStreamMessage(rawData);
+
+        dispatch(
+          setFeedOrdersData({
+            orders: data.orders,
+            total: data.total,
+            totalToday: data.totalToday
+          })
+        );
+      } catch (error) {
+        dispatch(
+          setFeedOrdersError(
+            error instanceof Error ? error.message : 'Invalid feed data'
+          )
+        );
+      }
+    }
+  });
+
+  if (loading && !orders.length) {
     return <Preloader />;
   }
-  return (
-    <FeedUI orders={orders} handleGetFeeds={() => dispatch(getOrdersApi())} />
-  );
+
+  return <FeedUI orders={orders} handleGetFeeds={reconnect} />;
 };
