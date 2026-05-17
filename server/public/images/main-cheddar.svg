@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200">
+  <rect width="320" height="200" rx="36" fill="#211510"/>
+  <path d="M82 70h156l-22 64H104Z" fill="#ffbe36"/>
+  <circle cx="136" cy="96" r="10" fill="#ffd86f"/>
+  <circle cx="170" cy="108" r="7" fill="#ffd86f"/>
+  <circle cx="190" cy="88" r="9" fill="#ffd86f"/>
+  <text x="160" y="180" fill="#f9ead7" font-size="24" text-anchor="middle" font-family="Verdana">Чеддер</text>
+</svg>

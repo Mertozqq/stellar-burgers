@@ -1,29 +1,40 @@
 .burger_constructor {
-  width: 600px;
-  color: #f2f2f3;
+  width: 100%;
+  color: var(--text-primary-color);
   display: flex;
   flex-direction: column;
-  padding-bottom: 20px;
+  gap: 16px;
+  padding-bottom: 18px;
 }
 
 .elements {
   min-height: 100px;
-
-  overflow-y: scroll;
+  overflow-y: auto;
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 8px 8px 8px 0;
 }
 
 .total {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 12px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 138, 61, 0.14);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .cost {
   display: flex;
   align-items: center;
+}
+
+.currency {
+  color: #ffd6b1;
 }
 
 .text {
@@ -41,12 +52,13 @@
   justify-content: center;
   align-items: center;
   border-radius: var(--common-border-radius-s);
-  background: var(--background-element);
+  border: 1px dashed rgba(255, 138, 61, 0.28);
+  background: rgba(255, 138, 61, 0.08);
   min-height: 80px;
   font-family: 'Jet Brains Mono';
   font-size: 16px;
   line-height: 24px;
-  color: #f2f2f3;
+  color: #ffe0be;
   margin-left: 44px;
 }
 
@@ -73,4 +85,27 @@
   flex-direction: column;
   width: 100%;
   max-width: 536px;
+}
+
+.orderButton {
+  min-width: 220px;
+  justify-content: center;
+  border-radius: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 768px) {
+  .total {
+    padding: 16px;
+  }
+
+  .noBuns {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .orderButton {
+    width: 100%;
+  }
 }

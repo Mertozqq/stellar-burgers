@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200">
+  <rect width="320" height="200" rx="36" fill="#211510"/>
+  <rect x="102" y="42" width="116" height="118" rx="24" fill="#5b3421"/>
+  <rect x="116" y="56" width="88" height="92" rx="18" fill="#8a5536"/>
+  <path d="M122 108c22-26 54-30 80 0-22 18-58 22-80 0Z" fill="#d39a63"/>
+  <text x="160" y="180" fill="#f9ead7" font-size="24" text-anchor="middle" font-family="Verdana">Дымный</text>
+</svg>

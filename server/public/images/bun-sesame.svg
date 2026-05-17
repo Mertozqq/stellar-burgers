@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200">
+  <rect width="320" height="200" rx="36" fill="#1f140f"/>
+  <ellipse cx="160" cy="88" rx="102" ry="54" fill="#df9a49"/>
+  <ellipse cx="160" cy="102" rx="114" ry="52" fill="#f2b35d"/>
+  <ellipse cx="160" cy="126" rx="120" ry="28" fill="#c46f2b"/>
+  <circle cx="112" cy="76" r="6" fill="#fff0c7"/>
+  <circle cx="142" cy="62" r="5" fill="#fff0c7"/>
+  <circle cx="175" cy="70" r="5" fill="#fff0c7"/>
+  <circle cx="205" cy="82" r="6" fill="#fff0c7"/>
+  <text x="160" y="180" fill="#f9ead7" font-size="24" text-anchor="middle" font-family="Verdana">Булка</text>
+</svg>

@@ -1,17 +1,8 @@
-# Stellar Burgers
+# Cowboy Burger
 
-Учебный frontend-проект на `React` и `TypeScript` для сервиса заказа бургеров.
+Frontend project built with `React` and `TypeScript`.
 
-Приложение включает:
-- конструктор бургеров
-- список ингредиентов
-- ленту заказов
-- регистрацию и авторизацию
-- личный кабинет пользователя
-- защищённые роуты
-- просмотр деталей ингредиентов и заказов
-
-## Стек
+## Stack
 
 - `React 18`
 - `TypeScript`
@@ -22,34 +13,33 @@
 - `Cypress`
 - `Storybook`
 
-## Запуск проекта
+## Run locally
 
-Установить зависимости:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Создать файл `.env` на основе `.env.example`:
+Create `.env` from `.env.example`:
 
 ```env
-BURGER_API_URL=https://norma.education-services.ru/api
+APP_API_URL=https://api.example.com/api
+APP_WS_URL=wss://api.example.com
 ```
 
-Запустить локальный сервер:
+`APP_API_URL` is used for HTTP requests. `APP_WS_URL` is used for realtime order streams. If `APP_WS_URL` is omitted, the app derives it from `APP_API_URL`.
+
+Start the app:
 
 ```bash
 npm start
 ```
 
-По умолчанию приложение открывается на `http://localhost:4000`.
-
-## Доступные команды
-
-Запуск dev-сервера:
+Start the local API server:
 
 ```bash
-npm start
+npm run server
 ```
 
 Production build:
@@ -58,63 +48,28 @@ Production build:
 npm run build
 ```
 
-Проверка линтером:
+## Deploy
 
-```bash
-npm run lint
+The project is configured for deployment to `GitHub Pages` through `GitHub Actions`.
+
+Before deploying, set repository variables:
+
+- `APP_API_URL`
+- `APP_WS_URL`
+
+## Local backend
+
+The repository includes a local backend in `server/` with:
+
+- ingredient catalog
+- authentication
+- order creation
+- order details
+- realtime order feeds over WebSocket
+
+Demo account:
+
+```text
+email: demo@cowboy.local
+password: 123456
 ```
-
-Автоисправление линтера:
-
-```bash
-npm run lint:fix
-```
-
-Запуск unit-тестов:
-
-```bash
-npm test
-```
-
-Запуск Cypress:
-
-```bash
-npm run cypress:open
-```
-
-Запуск Storybook:
-
-```bash
-npm run storybook
-```
-
-Сборка Storybook:
-
-```bash
-npm run build-storybook
-```
-
-## Структура проекта
-
-- `src/components` — контейнерные и UI-компоненты
-- `src/pages` — страницы приложения
-- `src/services` — store, slices и async actions
-- `src/utils` — API и вспомогательные функции
-- `__tests__` — unit-тесты
-- `cypress` — e2e-тесты
-
-## Деплой
-
-Проект настроен на деплой через `GitHub Actions` в `GitHub Pages`.
-
-После пуша в ветку `main` или `review` workflow:
-- устанавливает зависимости
-- собирает проект
-- публикует содержимое папки `dist`
-
-Для GitHub Pages используется `HashRouter`, поэтому роуты корректно работают без серверной настройки rewrite.
-
-## Макет и API
-
-- Макет: [Figma](https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8-(3-%D0%BC%D0%B5%D1%81%D1%8F%D1%86%D0%B0)_external_link?type=design&node-id=0-1&mode=design)
-- API: `https://norma.education-services.ru/api`

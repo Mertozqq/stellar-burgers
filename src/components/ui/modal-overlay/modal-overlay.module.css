@@ -4,6 +4,9 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background:
+    radial-gradient(circle at top, rgba(255, 138, 61, 0.12), transparent 30%),
+    rgba(9, 7, 6, 0.72);
+  backdrop-filter: blur(10px);
   z-index: 2;
 }

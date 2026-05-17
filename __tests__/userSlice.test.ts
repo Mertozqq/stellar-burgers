@@ -1,4 +1,9 @@
-import { userSlice, setIsAuthChecked, setUser, initialState } from '../src/services/user/slice';
+import {
+  userSlice,
+  setIsAuthChecked,
+  setUser,
+  initialState
+} from '../src/services/user/slice';
 import {
   register,
   login,
@@ -10,7 +15,7 @@ import {
 } from '../src/services/user/actions';
 
 import type { TUser } from '../src/utils/types';
-import type { TLoginData, TRegisterData } from '../src/utils/burger-api';
+import type { TLoginData, TRegisterData } from '../src/utils/api-client';
 
 describe('userSlice reducer (reducers + extraReducers)', () => {
   const makeUser = (email: string, name = 'Test User'): TUser => ({

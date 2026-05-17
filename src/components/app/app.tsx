@@ -16,8 +16,7 @@ import {
   Routes,
   useLocation,
   useMatch,
-  useNavigate,
-  useParams
+  useNavigate
 } from 'react-router-dom';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protected-route';
@@ -25,21 +24,26 @@ import { useEffect } from 'react';
 import { Preloader } from '@ui';
 import { useDispatch } from '../../services/store';
 import { getIngredients } from '../../services/ingredients/action';
-import { addIngredientToConstructor } from '../../services/constructor/slice';
 import { getUserData } from '../../services/user/actions';
 
+const TEXT = {
+  ingredientDetails:
+    '\u0414\u0435\u0442\u0430\u043b\u0438 \u0438\u043d\u0433\u0440\u0435\u0434\u0438\u0435\u043d\u0442\u0430'
+};
+
 const App = () => {
-  // from redux
   const isLoading = false;
   const error = false;
   const location = useLocation();
   const backgroundLocation = location.state?.background;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getUserData());
   }, []);
+
   const feedMatch = useMatch('/feed/:number');
   const orderMatch = useMatch('/profile/orders/:number');
   const handleModalClose = () => navigate(-1);
@@ -93,7 +97,7 @@ const App = () => {
                   <p
                     className={`text text_type_main-large ${styles.detailHeader}`}
                   >
-                    Детали ингредиента
+                    {TEXT.ingredientDetails}
                   </p>
                   <IngredientDetails />
                 </div>
@@ -123,7 +127,10 @@ const App = () => {
               <Route
                 path='/ingredients/:id'
                 element={
-                  <Modal title='Детали ингредиента' onClose={handleModalClose}>
+                  <Modal
+                    title={TEXT.ingredientDetails}
+                    onClose={handleModalClose}
+                  >
                     <IngredientDetails />
                   </Modal>
                 }
@@ -150,4 +157,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;

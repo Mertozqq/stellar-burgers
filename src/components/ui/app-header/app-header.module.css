@@ -1,37 +1,136 @@
 .header {
-  background-color: var(--background);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 18px 20px 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 15, 13, 0.92) 0%,
+    rgba(18, 15, 13, 0.64) 72%,
+    transparent 100%
+  );
+  backdrop-filter: blur(18px);
 }
+
 .menu {
   display: flex;
   align-items: center;
-  max-width: 1240px;
-  height: 56px;
+  justify-content: space-between;
+  gap: 18px;
+  max-width: 1280px;
+  min-height: 72px;
   margin: 0 auto;
+  padding: 14px 22px;
+  border: 1px solid var(--app-border);
+  border-radius: 28px;
+  background: rgba(28, 22, 18, 0.82);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
 }
 
 .menu_part_left {
   display: flex;
-  flex-basis: 35%;
+  flex: 1 1 0;
+  align-items: center;
+  gap: 8px;
 }
 
 .link {
   display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 999px;
   text-decoration: none;
   color: var(--text-inactive-color);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.link:hover {
+  transform: translateY(-1px);
+  color: var(--text-primary-color);
+  border-color: rgba(255, 138, 61, 0.12);
+  background: rgba(255, 138, 61, 0.06);
 }
 
 .link_active {
   color: var(--text-primary-color);
+  border-color: rgba(255, 138, 61, 0.24);
+  background: rgba(255, 138, 61, 0.08);
 }
 
 .link_position_last {
   display: flex;
   justify-content: flex-end;
-  flex-basis: 35%;
+  flex: 1 1 0;
+  align-items: center;
 }
 
-.logo {
+.brand {
   display: flex;
-  align-items: center;
-  margin: 0 auto;
+  flex-direction: column;
+  flex: 0 0 auto;
+  gap: 2px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.brand_eyebrow {
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #d1b08f;
+}
+
+.brand_title {
+  font-family: 'Iceland';
+  font-size: 42px;
+  line-height: 0.9;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff1df;
+  text-shadow: 0 0 30px rgba(255, 138, 61, 0.18);
+}
+
+@media (max-width: 1100px) {
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .menu_part_left,
+  .link_position_last {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 12px 0;
+  }
+
+  .menu {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .menu_part_left,
+  .link_position_last {
+    flex-wrap: wrap;
+  }
+
+  .brand_title {
+    font-size: 34px;
+  }
+
+  .link {
+    justify-content: center;
+    width: 100%;
+  }
 }
