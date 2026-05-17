@@ -16,7 +16,7 @@ Frontend project built with `React` and `TypeScript`.
 ## Run locally
 
 Install dependencies:
- 
+
 ```bash
 npm install
 ```
